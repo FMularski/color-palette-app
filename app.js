@@ -6,14 +6,20 @@ const sliders = document.querySelectorAll('input[type="range"]');
 const hexTexts = document.querySelectorAll('.color h2');
 
 
-function generateHex() {
-    // const letters = '0123456789ABCDEF';
-    // let hex = '#';
-    // for(let i = 0; i < 6; i++){
-    //     hex += letters[Math.floor(Math.random() * 16)];
-    // }
+/* event listeners */
 
-    // return hex;
+sliders.forEach(slider => {
+    slider.addEventListener('input', hslControls);
+})
+
+colorDivs.forEach((div, index) => {
+    div.addEventListener('change', () => {
+        updateTextUI(index);
+    })
+})
+
+/* functions  */
+function generateHex() {
     const hex = chroma.random();
     return hex;
 }
@@ -65,6 +71,40 @@ function colorizeSliders(color, hue, brightness, saturation) {
 
     /* hue */ 
     hue.style.backgroundImage = `linear-gradient(to right, rgb(204, 75, 75), rgb(204,204 ,75),rgb(75, 204, 75),rgb(75, 204, 204),rgb(75,75,204),rgb(204,75,204),rgb(204,75,75))`;
+}
+
+function hslControls(event) {
+    const index = event.target.getAttribute("data-bright") ||
+    event.target.getAttribute("data-sat") ||
+    event.target.getAttribute("data-hue");
+    
+    let sliders = event.target.parentElement.querySelectorAll('input[type="range"]');
+    const hue = sliders[0];
+    const brightness = sliders[1];
+    const saturation = sliders[2];
+
+    const bgColor = colorDivs[index].querySelector('h2').innerText;
+    let color = chroma(bgColor)
+    .set('hsl.s', saturation.value)
+    .set('hsl.l', brightness.value)
+    .set('hsl.h', hue.value);
+
+    colorDivs[index].style.backgroundColor = color;
+
+}
+
+function updateTextUI(index) {
+    const activeDiv = colorDivs[index];
+    const color = chroma(activeDiv.style.backgroundColor);
+    const textHex = activeDiv.querySelector('h2');
+    const icons = activeDiv.querySelectorAll('.controls button');
+    textHex.innerText = color.hex();
+
+    // check contrast
+    checkTextContrast(color, textHex);
+    for ( icon of icons){
+        checkTextContrast(color, icon);
+    }
 }
 
 fillDivsWithColors();
