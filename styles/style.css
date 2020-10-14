@@ -53,6 +53,8 @@ svg {
 .color h2 {
   font-size: 2rem;
   cursor: pointer;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .sliders {
@@ -156,6 +158,8 @@ svg {
   background: none;
   cursor: pointer;
   margin: 2rem 0rem;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 input[type="range"] {

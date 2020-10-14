@@ -4,6 +4,7 @@ const colorDivs = document.querySelectorAll('.color');
 const generateButton = document.querySelector('.generate');
 const sliders = document.querySelectorAll('input[type="range"]');
 const hexTexts = document.querySelectorAll('.color h2');
+let initialColors;
 
 
 /* event listeners */
@@ -25,9 +26,14 @@ function generateHex() {
 }
 
 function fillDivsWithColors(){
+
+    initialColors = [];
+
     colorDivs.forEach( div => {
         const generatedColor = generateHex();
         const hexH2 = div.children[0]; 
+
+        initialColors.push(chroma(generatedColor).hex());
         
         hexH2.innerText = generatedColor;
         div.style.backgroundColor = generatedColor;
@@ -45,7 +51,8 @@ function fillDivsWithColors(){
 
         colorizeSliders(color, hue, brightness, saturation);
 
-    })
+    });
+    resetInputs();
 }
 
 function checkTextContrast(color, text) {
@@ -83,7 +90,8 @@ function hslControls(event) {
     const brightness = sliders[1];
     const saturation = sliders[2];
 
-    const bgColor = colorDivs[index].querySelector('h2').innerText;
+    const bgColor = initialColors[index];
+
     let color = chroma(bgColor)
     .set('hsl.s', saturation.value)
     .set('hsl.l', brightness.value)
@@ -91,6 +99,7 @@ function hslControls(event) {
 
     colorDivs[index].style.backgroundColor = color;
 
+    colorizeSliders(color, hue, brightness, saturation);
 }
 
 function updateTextUI(index) {
@@ -105,6 +114,29 @@ function updateTextUI(index) {
     for ( icon of icons){
         checkTextContrast(color, icon);
     }
+}
+
+function resetInputs(){
+    const sliders = document.querySelectorAll('.sliders input');
+    sliders.forEach(slider => {
+        if(slider.name === 'hue'){
+            const hueColor = initialColors[slider.getAttribute('data-hue')];
+            const hueValue = chroma(hueColor).hsl()[0];
+            slider.value = Math.floor(hueValue);
+        }
+
+        if(slider.name === 'brightness'){
+            const brightColor = initialColors[slider.getAttribute('data-bright')];
+            const brightValue = chroma(brightColor).hsl()[2];
+            slider.value = Math.floor(brightValue * 100) / 100;
+        }
+
+        if(slider.name === 'saturation'){
+            const satColor = initialColors[slider.getAttribute('data-sat')];
+            const satValue = chroma(satColor).hsl()[1];
+            slider.value = Math.floor(satValue * 100) / 100;
+        }
+    })
 }
 
 fillDivsWithColors();
