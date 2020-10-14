@@ -175,7 +175,9 @@ input[type="range"] {
   cursor: pointer;
 }
 
-.copy-container {
+.copy-container,
+.save-container,
+.library-container {
   position: fixed;
   top: 0%;
   left: 0%;
@@ -197,12 +199,16 @@ input[type="range"] {
   pointer-events: none;
 }
 
-.copy-container.active {
+.copy-container.active,
+.save-container.active,
+.library-container.active {
   opacity: 1;
   pointer-events: all;
 }
 
-.copy-popup {
+.copy-popup,
+.save-popup,
+.library-popup {
   background-color: white;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -228,13 +234,48 @@ input[type="range"] {
   min-height: 30vh;
 }
 
-.copy-popup h4 {
+.copy-popup h4,
+.save-popup h4,
+.library-popup h4 {
   font-size: 2rem;
   padding: 2rem;
 }
 
-.copy-popup.active {
+.copy-popup.active,
+.save-popup.active,
+.library-popup.active {
   -webkit-transform: translateY(0rem);
           transform: translateY(0rem);
+}
+
+.save-name {
+  font-size: 1.5rem;
+  padding: 1rem;
+}
+
+.close-save,
+.close-library {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.5rem;
+  border-top-right-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+  border: none;
+  background: #494949;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.submit-save {
+  margin: 2rem;
+  padding: 1rem;
+  background: #3c3c5c;
+  border: none;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 10rem;
 }
 /*# sourceMappingURL=style.css.map */

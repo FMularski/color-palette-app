@@ -90,7 +90,9 @@ input[type="range"] {
   cursor: pointer;
 }
 
-.copy-container {
+.copy-container,
+.save-container,
+.library-container {
   position: fixed;
   top: 0%;
   left: 0%;
@@ -111,7 +113,9 @@ input[type="range"] {
   }
 }
 
-.copy-popup {
+.copy-popup,
+.save-popup,
+.library-popup {
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -131,4 +135,35 @@ input[type="range"] {
   &.active {
     transform: translateY(0rem);
   }
+}
+
+.save-name {
+  font-size: 1.5rem;
+  padding: 1rem;
+}
+
+.close-save,
+.close-library {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.5rem;
+  border-top-right-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+  border: none;
+  background: rgb(73, 73, 73);
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.submit-save {
+  margin: 2rem;
+  padding: 1rem;
+  background: rgb(60, 60, 92);
+  border: none;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 10rem;
 }
