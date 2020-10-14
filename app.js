@@ -223,10 +223,15 @@ const submitSave = document.querySelector('.submit-save');
 const closeSave = document.querySelector('.close-save');
 const saveContainer = document.querySelector('.save-container');
 const saveInput = document.querySelector('.save-container input');
+const libraryContainer = document.querySelector('.library-container');
+const libraryButton = document.querySelector('.library');
+const closeLibraryButton = document.querySelector('.close-library');
 
 saveButton.addEventListener('click', openPalette);
 closeSave.addEventListener('click', closePalette);
 submitSave.addEventListener('click', savePalette);
+libraryButton.addEventListener('click', openLibrary);
+closeLibraryButton.addEventListener('click', closeLibrary);
 
 function openPalette(event){
     const popup = saveContainer.children[0];
@@ -255,6 +260,29 @@ function savePalette(event){
 
     saveToLocal(paletteObj);
     saveInput.value = "";
+
+    const palette = document.createElement('div');
+    palette.classList.add('custom-palette');
+    const title = document.createElement('h4');
+    title.innerText = paletteObj.name;
+    const preview = document.createElement('div');
+    preview.classList.add('small-preview');
+
+    paletteObj.colors.forEach(color => {
+        const smallDiv = document.createElement('div');
+        smallDiv.style.backgroundColor = color;
+        preview.appendChild(smallDiv);
+    });
+
+    const paletteButton = document.createElement('button');
+    paletteButton.classList.add('pick-palette-button');
+    paletteButton.classList.add(paletteObj.nr);
+    paletteButton.innerText = 'Select';
+
+    palette.appendChild(title);
+    palette.appendChild(preview);
+    palette.appendChild(paletteButton);
+    libraryContainer.children[0].appendChild(palette);
 }
 
 function saveToLocal(paletteObj){
@@ -267,6 +295,18 @@ function saveToLocal(paletteObj){
 
     localPalettes.push(paletteObj);
     localStorage.setItem('palettes', JSON.stringify(localPalettes));
+}
+
+function openLibrary(){
+    const popup = libraryContainer.children[0];
+    libraryContainer.classList.add('active');
+    popup.classList.add('active');
+}
+
+function closeLibrary(){
+    const popup = libraryContainer.children[0];
+    libraryContainer.classList.remove('active');
+    popup.classList.remove('active');
 }
 
 fillDivsWithColors();
