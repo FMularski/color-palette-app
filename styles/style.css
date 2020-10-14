@@ -72,8 +72,12 @@ svg {
   width: 80%;
   border-top-right-radius: 1rem;
   border-top-left-radius: 1rem;
+  opacity: 0;
+  -webkit-transform: translateY(100px);
+          transform: translateY(100px);
   -webkit-transition: all 0.5s ease-in-out;
   transition: all 0.5s ease-in-out;
+  pointer-events: none;
 }
 
 .sliders.active {

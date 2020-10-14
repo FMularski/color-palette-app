@@ -5,11 +5,17 @@ const generateButton = document.querySelector('.generate');
 const sliders = document.querySelectorAll('input[type="range"]');
 const hexTexts = document.querySelectorAll('.color h2');
 const popup = document.querySelector('.copy-container');
+const adjustButtons = document.querySelectorAll('.adjust');
+const lockButtons = document.querySelectorAll('.lock');
+const closeAdjustButtons = document.querySelectorAll('.close-adjustment');
+const sliderContainers = document.querySelectorAll('.sliders');
 
 let initialColors;
 
 
 /* event listeners */
+
+generateButton.addEventListener('click', fillDivsWithColors);
 
 sliders.forEach(slider => {
     slider.addEventListener('input', hslControls);
@@ -33,10 +39,34 @@ popup.addEventListener('transitionend', ()=>{
     popup.classList.remove('active');
 })
 
+adjustButtons.forEach( (button, index) => {
+    button.addEventListener('click', () => {
+        openAdjustPanel(index);
+    })
+})
+
+closeAdjustButtons.forEach( (button, index) => {
+    button.addEventListener('click', () => {
+        closeAdjustPanel(index);
+    })
+})
+
+lockButtons.forEach((button, index) => {
+    button.addEventListener('click', () =>{
+        lockColor(index);
+    })
+})
+
 /* functions  */
 function generateHex() {
     const hex = chroma.random();
     return hex;
+}
+
+function lockColor(index){
+    colorDivs[index].classList.toggle('locked');
+    lockButtons[index].firstChild.classList.toggle('fa-lock-open');
+    lockButtons[index].firstChild.classList.toggle('fa-lock');
 }
 
 function fillDivsWithColors(){
@@ -47,8 +77,13 @@ function fillDivsWithColors(){
         const generatedColor = generateHex();
         const hexH2 = div.children[0]; 
 
-        initialColors.push(chroma(generatedColor).hex());
-        
+        if( div.classList.contains('locked')){
+            initialColors.push(hexH2.innerText);
+            return;
+        } else {
+            initialColors.push(chroma(generatedColor).hex());    
+        }
+
         hexH2.innerText = generatedColor;
         div.style.backgroundColor = generatedColor;
 
@@ -67,6 +102,11 @@ function fillDivsWithColors(){
 
     });
     resetInputs();
+    
+    adjustButtons.forEach((button, index) => {
+        checkTextContrast(initialColors[index], button);
+        checkTextContrast(initialColors[index], lockButtons[index]);
+    })
 }
 
 function checkTextContrast(color, text) {
@@ -164,6 +204,14 @@ function copyToClipboard(hex){
     const popupBox = popup.children[0];
     popup.classList.add('active');
     popupBox.classList.add('active');
+}
+
+function openAdjustPanel(index){
+    sliderContainers[index].classList.toggle('active');
+}
+
+function closeAdjustPanel(index){
+    sliderContainers[index].classList.remove('active');
 }
 
 fillDivsWithColors();
